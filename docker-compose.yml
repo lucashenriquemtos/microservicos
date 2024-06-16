@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: ms
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - minha-rede
+
+#  cliente:
+#    image: cliente:1.0
+#    container_name: cliente-ms
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ms
+#      SPRING_DATASOURCE_USERNAME: user
+#      SPRING_DATASOURCE_PASSWORD: 123
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+#    ports:
+#      - "8081:8081"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.5'     # Limita o uso da CPU a 50%
+#          memory: 512M    # Limita o uso de memória a 512MB
+#    depends_on:
+#      - eureka
+#      - postgres
+#    networks:
+#      - minha-rede
+
+  eureka:
+    image: eureka:1.0
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'     # Limita o uso da CPU a 50%
+          memory: 512M    # Limita o uso de memória a 512MB
+    networks:
+      - minha-rede
+
+#  pedido:
+#    image: pedido:1.0
+#    container_name: pedido-ms
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ms
+#      SPRING_DATASOURCE_USERNAME: user
+#      SPRING_DATASOURCE_PASSWORD: 123
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+#    ports:
+#      - "8082:8082"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.5'     # Limita o uso da CPU a 50%
+#          memory: 512M    # Limita o uso de memória a 512MB
+#    depends_on:
+#      - eureka
+#      - postgres
+#    networks:
+#      - minha-rede
+
+networks:
+  minha-rede:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

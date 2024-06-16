@@ -1,0 +1,6 @@
+
+# Configuração do Eureka Client
+eureka:
+  client:
+    service-url:
+      default-zone: http://eureka-server:8761/eureka/
